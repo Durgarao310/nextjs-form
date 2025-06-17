@@ -1,26 +1,208 @@
-@import "tailwindcss";
+/* ==========================================================================
+   Design Tokens
+   ========================================================================== */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base colors */
+  --color-white: #ffffff;
+  --color-black: #171717;
+  --color-gray-100: #f3f3f3;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #ccc;
+  --color-gray-400: #6c757d;
+  --color-gray-800: #262626;
+  --color-gray-900: #1a1a1a;
+  
+  /* Semantic colors */
+  --color-primary: #007bff;
+  --color-success: #28a745;
+  --color-error: #dc3545;
+  
+  /* Theme colors - Light */
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+  
+  /* Input Base - Light */
+  --input-border: var(--color-gray-300);
+  --input-bg: var(--color-white);
+  --input-text: var(--color-black);
+  
+  /* Input States - Light */
+  --input-active: var(--color-primary);
+  --input-active-shadow: rgba(0, 123, 255, 0.5);
+  
+  --input-error-border: var(--color-error);
+  --input-error-bg: #f8d7da;
+  --input-error-text: #721c24;
+  
+  --input-valid-border: var(--color-success);
+  --input-valid-bg: #d4edda;
+  --input-valid-text: #155724;
+  
+  --input-hover: var(--color-gray-400);
+  --input-filled: var(--color-gray-200);
+  --input-loading: var(--color-gray-100);
+  
+  /* Spacing */
+  --space-xs: 0.3rem;
+  --space-sm: 0.4rem;
+  --space-md: 0.5rem;
+  
+  /* Font sizes */
+  --font-size-sm: 0.8rem;
+  --font-size-md: 0.9rem;
+  --font-size-base: 1rem;
+  
+  /* Border radius */
+  --border-radius: 4px;
+  
+  /* Transitions */
+  --transition-quick: 0.2s ease;
+  --transition-base: 0.3s ease;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Dark mode overrides */
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Theme colors - Dark */
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    /* Input Base - Dark */
+    --input-border: var(--color-gray-800);
+    --input-bg: var(--color-gray-900);
+    --input-text: #ededed;
+    
+    /* Input States - Dark */
+    --input-active: #0d6efd;
+    --input-active-shadow: rgba(13, 110, 253, 0.5);
+    
+    --input-error-border: var(--color-error);
+    --input-error-bg: #2c1215;
+    --input-error-text: #f8d7da;
+    
+    --input-valid-border: var(--color-success);
+    --input-valid-bg: #0d1912;
+    --input-valid-text: #d4edda;
+    
+    --input-hover: var(--color-gray-400);
+    --input-filled: #2d3238;
+    --input-loading: var(--color-gray-800);
   }
 }
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Input Component
+   ========================================================================== */
+
+.input {
+  /* Base styles */
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  padding: var(--space-md);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  width: 100%;
+  box-sizing: border-box;
+  
+  /* Transitions */
+  transition: all var(--transition-base);
+  -webkit-transition: all var(--transition-base);
+  
+  /* Hardware acceleration */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Focus states */
+.input:focus {
+  outline: none;
+  border-color: var(--input-active);
+  box-shadow: 0 0 0 2px var(--input-active-shadow);
+  -webkit-box-shadow: 0 0 0 2px var(--input-active-shadow);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--input-active);
+  outline-offset: 2px;
+}
+
+/* Input states */
+.input.active {
+  border-color: var(--input-active);
+  box-shadow: 0 0 5px var(--input-active-shadow);
+  -webkit-box-shadow: 0 0 5px var(--input-active-shadow);
+}
+
+.input.error {
+  border-color: var(--input-error-border);
+  background-color: var(--input-error-bg);
+  color: var(--input-error-text);
+}
+
+.input.valid {
+  border-color: var(--input-valid-border);
+  background-color: var(--input-valid-bg);
+  color: var(--input-valid-text);
+}
+
+.input.hover:hover {
+  border-color: var(--input-hover);
+}
+
+.input.filled {
+  background-color: var(--input-filled);
+}
+
+.input.loading {
+  background-color: var(--input-loading);
+  cursor: wait;
+  
+  /* Disable pointer events during loading */
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Responsive Styles
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .input {
+    font-size: var(--font-size-md);
+    padding: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .input {
+    font-size: var(--font-size-sm);
+    padding: var(--space-xs);
+  }
+}
+
+/* ==========================================================================
+   Print Styles (Optional)
+   ========================================================================== */
+
+@media print {
+  .input {
+    border: 1px solid #000;
+    background: none;
+    box-shadow: none;
+  }
 }
